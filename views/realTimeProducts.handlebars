@@ -1,0 +1,53 @@
+<h1>Productos</h1>
+
+
+{{#each products}}
+    <div class="product">
+        <h3>{{this.title}}</h3>
+        <p>{{this.description}}</p>
+        <p>Precio: ${{this.price}}</p>
+        <button onclick="addToCart({{this.id}})">Agregar al carrito</button>
+    </div>
+{{/each}}
+
+
+<div class="pagination">
+    {{#if hasPrevPage}}
+        <a href="{{prevLink}}">Página anterior</a>
+    {{/if}}
+    {{#if hasNextPage}}
+        <a href="{{nextLink}}">Página siguiente</a>
+    {{/if}}
+</div>
+
+<script>
+   
+    function addToCart(productId) {
+        fetch(`/api/carts/1/products/${productId}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                alert('Producto agregado al carrito');
+            });
+    }
+</script>
+
+<h1>Carrito</h1>
+{{#each products}}
+    <div class="cart-product">
+        <h3>{{this.title}}</h3>
+        <p>{{this.description}}</p>
+        <p>Precio: ${{this.price}}</p>
+        <button onclick="removeFromCart({{this.id}})">Eliminar</button>
+    </div>
+{{/each}}
+
+<script>
+    function removeFromCart(productId) {
+        fetch(`/api/carts/1/products/${productId}`, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(data => {
+                alert('Producto eliminado del carrito');
+                location.reload(); 
+            });
+    }
+</script>
